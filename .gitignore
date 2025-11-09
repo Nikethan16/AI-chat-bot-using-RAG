@@ -1,33 +1,5 @@
-# Python
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-*.env
 .env
-
-# Virtual environments
-venv/
+*.pyc
+__pycache__/
 .venv/
-env/
-neo_chatbot/venv/
-
-# IDEs
-.vscode/
-.idea/
-
-# Data and indexes
-data/
-*.bin
-*.index
-*.pkl
-faiss_index.bin
-chunk_metadata.jsonl
-processed_chunks.jsonl
-
-# Logs
-*.log
-
-# OS
-.DS_Store
-Thumbs.db
+venv/
