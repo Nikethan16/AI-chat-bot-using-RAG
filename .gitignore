@@ -25,9 +25,6 @@ faiss_index.bin
 chunk_metadata.jsonl
 processed_chunks.jsonl
 
-# Streamlit artifacts
-.streamlit/
-
 # Logs
 *.log
 
