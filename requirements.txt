@@ -1,0 +1,14 @@
+streamlit
+openai
+faiss-cpu
+numpy
+tqdm
+requests
+pdfplumber
+python-docx
+rank-bm25
+python-dotenv
+sentence-transformers
+langchain
+langchain-core
+
