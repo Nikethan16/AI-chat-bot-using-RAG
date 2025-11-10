@@ -2,7 +2,7 @@
 
 An intelligent **healthcare-focused assistant** built with **Retrieval-Augmented Generation (RAG)** and **LLM fallback via Groq API**.  
 It analyzes uploaded reports, retrieves relevant medical context, and generates clear, factual insights — using **live web search** when local knowledge is insufficient.
-
+ live demo = https://ai-chat-bot-using-rag-by-srinikethan.streamlit.app/
 ---
 
 ## 🚀 Features
