@@ -12,20 +12,19 @@ from config.config import (
     TOP_K
 )
 
-# ===== LOAD MODEL =====
-print(f"🔍 Loading embedding model: {EMBED_MODEL_LOCAL}")
+# Load embedding model
+print(f"Loading embedding model: {EMBED_MODEL_LOCAL}")
 embed_model = SentenceTransformer(EMBED_MODEL_LOCAL)
 
-# ===== SAFE LOAD FAISS INDEX =====
+# Load FAISS index safely
 print(f"Loading FAISS index from: {FAISS_INDEX_PATH}")
-
 if not os.path.exists(FAISS_INDEX_PATH):
-    print(f"⚠️ FAISS index not found at {FAISS_INDEX_PATH}. Skipping RAG for now.")
+    print(f"FAISS index not found at {FAISS_INDEX_PATH}. Skipping RAG initialization.")
     index = None
 else:
     index = faiss.read_index(FAISS_INDEX_PATH)
 
-# ===== LOAD METADATA =====
+# Load metadata
 metadata_path = os.path.join(DATA_DIR, "chunk_metadata.jsonl")
 if os.path.exists(metadata_path):
     with open(metadata_path, "r", encoding="utf-8") as f:
@@ -33,7 +32,6 @@ if os.path.exists(metadata_path):
 else:
     metadata = []
 
-# ===== EMBEDDING HELPERS =====
 def embed_query(query: str):
     """Convert user query to normalized embedding."""
     return embed_model.encode(
@@ -43,18 +41,18 @@ def embed_query(query: str):
     )[0].astype("float32")
 
 def load_chunks():
-    """Load pre-processed chunks."""
+    """Load processed text chunks."""
     with open(CHUNKS_PATH, "r", encoding="utf-8") as f:
         return [json.loads(line) for line in f]
 
-# ===== MAIN CONTEXT RETRIEVAL =====
 def get_relevant_context(query: str, k: int = TOP_K, report_text: str = None):
+    """Retrieve the most relevant document chunks for a given query."""
     if index is None:
         return "", []
 
     chunks = load_chunks()
 
-    # Optional: use extracted keywords from uploaded report to enrich query
+    # If a medical report is uploaded, use extracted keywords for query enrichment
     if report_text:
         keywords = re.findall(r"\b[A-Z][a-z]+(?:\s[A-Z][a-z]+)*\b", report_text)
         keywords = list(set([k for k in keywords if len(k) > 3]))
@@ -79,27 +77,28 @@ def get_relevant_context(query: str, k: int = TOP_K, report_text: str = None):
         sources.update(srcs)
         selected_chunks.append(f"[{topic} - {section}]\n{text}\n")
 
-    # Compute average FAISS distance
+    # Calculate average similarity (lower distance = better match)
     avg_distance = total_distance / max(len(selected_chunks), 1)
-    print(f"🧩 RAG average distance: {avg_distance:.3f}")
+    print(f"RAG average similarity distance: {avg_distance:.3f}")
 
-    # -------------------------------
-    # ✅ Adaptive Relevance Threshold
-    # -------------------------------
-    # - <0.4 : Strongly Similarity
-    # - 0.4–0.55 : Acceptable
-    # - >0.55 : Likely off-topic, prefer web search
+    # Relevance threshold check
+    # - < 0.4: Strong similarity
+    # - 0.4–0.55: Acceptable
+    # - > 0.55: Weak, trigger web search
     if avg_distance > 0.5 or not selected_chunks:
-        print(f"⚠️ RAG context weak (avg distance: {avg_distance:.3f}) — switching to web search.")
+        print(f"RAG context weak (distance {avg_distance:.3f}) — fallback to web search.")
         return "", list(sources)
 
-    # Bonus: heuristic filter to avoid accidental non-medical text
-    medical_keywords = ["health", "disease", "treatment", "symptom", "diagnosis", "medical", "nutrition", "blood", "doctor"]
+    # Basic filter to ensure medical relevance
+    medical_keywords = [
+        "health", "disease", "treatment", "symptom", "diagnosis",
+        "medical", "nutrition", "blood", "doctor"
+    ]
     context_preview = " ".join(selected_chunks[:3]).lower()
     if not any(word in context_preview for word in medical_keywords) and avg_distance > 0.55:
-        print(f"⚠️ Context lacks medical relevance — triggering web search.")
+        print("Context not medically relevant — switching to web search.")
         return "", list(sources)
 
-    # Combine context for RAG
+    # Combine selected chunks
     combined_context = "\n\n".join(selected_chunks)
     return combined_context, list(sources)
