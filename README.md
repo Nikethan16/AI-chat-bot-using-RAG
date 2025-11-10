@@ -2,7 +2,8 @@
 
 An intelligent **healthcare-focused assistant** built with **Retrieval-Augmented Generation (RAG)** and **LLM fallback via Groq API**.  
 It analyzes uploaded reports, retrieves relevant medical context, and generates clear, factual insights — using **live web search** when local knowledge is insufficient.
- live demo = https://ai-chat-bot-using-rag-by-srinikethan.streamlit.app/
+
+live demo = https://ai-chat-bot-using-rag-by-srinikethan.streamlit.app/
 ---
 
 ## 🚀 Features
@@ -94,12 +95,13 @@ streamlit run app.py
 ```
 
 ## Example Queries
-Type	Example Query
-RAG-based	"Explain causes of anemia"
-Web fallback	"Latest treatment for Alzheimer's in 2025"
-Report analysis	"Summarize my uploaded blood report"
-Out-of-domain	"Who won the FIFA World Cup?" → (graceful refusal)
-
+```plaintext
+####Type	           ####Example Query
+RAG-based	          "Explain causes of anemia"
+Web fallback	       "Latest treatment for Alzheimer's in 2025"
+Report analysis	    "Summarize my uploaded blood report"
+Out-of-domain	      "Who won the FIFA World Cup?" → (graceful refusal)
+```
 ## Notes
 This chatbot provides educational insights only. Always consult certified healthcare professionals for medical advice.
 
