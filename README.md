@@ -17,29 +17,33 @@ It analyzes uploaded reports, retrieves relevant medical context, and generates 
 ---
 
 ## 🧠 Architecture Overview
-Project structure
-📦 project_root/
+## 🧠 Architecture Overview
+
+```plaintext
+project_root/
 │
-├── app.py # Streamlit app (main entry)
+├── app.py                     # Streamlit app (main entry)
+│
 ├── config/
-│ └── config.py # API keys, constants, and model configs
+│   └── config.py               # API keys, constants, and model configs
 │
 ├── models/
-│ ├── llm.py # LLM logic (Groq)
-│ └── embeddings.py # Builds FAISS index from embeddings
+│   ├── llm.py                  # LLM logic (Groq)
+│   └── embeddings.py           # Builds FAISS index from embeddings
 │
 ├── utils/
-│ ├── pdf_parser.py # Extracts text from PDFs
-│ ├── chunking.py # Splits documents into small text chunks
-│ ├── rag_search.py # Retrieves context using FAISS
-│ └── web_search.py # Performs Google Custom Search fallback
+│   ├── pdf_parser.py           # Extracts text from PDFs
+│   ├── chunking.py             # Splits documents into small text chunks
+│   ├── rag_search.py           # Retrieves context using FAISS
+│   └── web_search.py           # Performs Google Custom Search fallback
 │
-├── data/ # Local dataset
-│ ├── raw_pdfs/ # Uploaded PDFs
-│ ├── processed_chunks.jsonl # Chunked text for RAG
-│ └── faiss_index.bin # Vector index for retrieval
+├── data/                       # Local dataset
+│   ├── raw_pdfs/               # Uploaded PDFs
+│   ├── processed_chunks.jsonl  # Chunked text for RAG
+│   └── faiss_index.bin         # Vector index for retrieval
 │
 └── requirements.txt
+```
 ## ⚙️ How It Works
 
 1. **Upload medical PDFs** → Extracted using `pdfplumber`  
