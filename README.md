@@ -3,6 +3,7 @@
 An intelligent **healthcare-focused assistant** built with **Retrieval-Augmented Generation (RAG)** and **LLM fallback via Groq API**.  
 It analyzes uploaded reports, retrieves relevant medical context, and generates clear, factual insights — using **live web search** when local knowledge is insufficient.
 
+live demo = https://ai-chat-bot-using-rag-by-srinikethan.streamlit.app/
 ---
 
 ## 🚀 Features
@@ -18,32 +19,31 @@ It analyzes uploaded reports, retrieves relevant medical context, and generates 
 
 ## 🧠 Architecture Overview
 
-📦 project_root/
+```plaintext
+project_root/
 │
-├── app.py # Streamlit app (main entry)
+├── app.py                     # Streamlit app (main entry)
+│
 ├── config/
-│ └── config.py # API keys, constants, and model configs
+│   └── config.py               # API keys, constants, and model configs
 │
 ├── models/
-│ ├── llm.py # LLM logic (Groq)
-│ └── embeddings.py # Builds FAISS index from embeddings
+│   ├── llm.py                  # LLM logic (Groq)
+│   └── embeddings.py           # Builds FAISS index from embeddings
 │
 ├── utils/
-│ ├── pdf_parser.py # Extracts text from PDFs
-│ ├── chunking.py # Splits documents into small text chunks
-│ ├── rag_search.py # Retrieves context using FAISS
-│ └── web_search.py # Performs Google Custom Search fallback
+│   ├── pdf_parser.py           # Extracts text from PDFs
+│   ├── chunking.py             # Splits documents into small text chunks
+│   ├── rag_search.py           # Retrieves context using FAISS
+│   └── web_search.py           # Performs Google Custom Search fallback
 │
-├── data/ # Local dataset
-│ ├── raw_pdfs/ # Uploaded PDFs
-│ ├── processed_chunks.jsonl # Chunked text for RAG
-│ └── faiss_index.bin # Vector index for retrieval
+├── data/                       # Local dataset
+│   ├── raw_pdfs/               # Uploaded PDFs
+│   ├── processed_chunks.jsonl  # Chunked text for RAG
+│   └── faiss_index.bin         # Vector index for retrieval
 │
 └── requirements.txt
-
-
----
-
+```
 ## ⚙️ How It Works
 
 1. **Upload medical PDFs** → Extracted using `pdfplumber`  
@@ -54,9 +54,71 @@ It analyzes uploaded reports, retrieves relevant medical context, and generates 
 
 ---
 
-## 💻 Setup Guide
+## 💻 Install Dependencies
+
+### 1. Create and activate a Python virtual environment (recommended):
+```bash
+python -m venv venv
+# Windows
+venv\Scripts\activate
+# macOS / Linux
+source venv/bin/activate
+
+```
+### 2. Install packages from requirements.txt:
+```bash
+pip install -r requirements.txt
+```
+
+## ⚙️ Setup Guide
 
 ### 1. Clone Repository
 ```bash
 git clone https://github.com/<your-username>/<your-repo>.git
 cd <your-repo>
+```
+### 2. Add Environment Variables
+#### Create .env file in the root folder:
+```bash
+GROQ_API_KEY=your_groq_key_here
+GOOGLE_API_KEY=your_google_api_key_here
+GOOGLE_CX_ID=your_custom_search_engine_id
+EMBED_MODEL_LOCAL=intfloat/e5-base-v2  # optional override
+```
+### 3. Build FAISS Index
+```bash
+python models/embeddings.py
+```
+### 4. Run the Streamlit App
+```bash
+streamlit run app.py
+```
+
+## Example Queries
+```plaintext
+####Type	           ####Example Query
+RAG-based	          "Explain causes of anemia"
+Web fallback	      "Latest treatment for Alzheimer's in 2025"
+Report analysis	      "Summarize my uploaded blood report"
+Out-of-domain	      "Who won the FIFA World Cup?" → (graceful refusal)
+```
+## Notes
+This chatbot provides educational insights only. Always consult certified healthcare professionals for medical advice.
+
+RAG works offline if you have the FAISS index; web search is used only when needed.
+
+Keep .env secret — do not commit API keys to git.
+
+## Future Enhancements
+
+Improve RAG context matching with adaptive thresholds
+
+Add personalized health tracking for users
+
+Include voice interaction (speech-to-text / text-to-speech)
+
+Add multilingual support for wider accessibility
+
+## 🧑‍💻 Author
+
+Developed by Nikethan
