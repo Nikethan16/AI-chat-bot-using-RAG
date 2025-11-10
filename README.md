@@ -17,7 +17,7 @@ It analyzes uploaded reports, retrieves relevant medical context, and generates 
 ---
 
 ## 🧠 Architecture Overview
-
+Project structure
 📦 project_root/
 │
 ├── app.py # Streamlit app (main entry)
@@ -40,10 +40,6 @@ It analyzes uploaded reports, retrieves relevant medical context, and generates 
 │ └── faiss_index.bin # Vector index for retrieval
 │
 └── requirements.txt
-
-
----
-
 ## ⚙️ How It Works
 
 1. **Upload medical PDFs** → Extracted using `pdfplumber`  
