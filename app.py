@@ -105,7 +105,7 @@ if st.session_state.show_uploader:
 
         if st.session_state.uploaded_texts:
             st.success("All documents processed successfully.")
-            if st.button("Generate Combined Insights"):
+            if st.button("Generate Insights"):
                 try:
                     combined_text = "\n\n".join(st.session_state.uploaded_texts)
                     with st.spinner("Analyzing uploaded documents..."):
