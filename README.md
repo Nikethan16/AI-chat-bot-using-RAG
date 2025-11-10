@@ -98,8 +98,8 @@ streamlit run app.py
 ```plaintext
 ####Type	           ####Example Query
 RAG-based	          "Explain causes of anemia"
-Web fallback	       "Latest treatment for Alzheimer's in 2025"
-Report analysis	    "Summarize my uploaded blood report"
+Web fallback	      "Latest treatment for Alzheimer's in 2025"
+Report analysis	      "Summarize my uploaded blood report"
 Out-of-domain	      "Who won the FIFA World Cup?" → (graceful refusal)
 ```
 ## Notes
